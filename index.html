@@ -461,10 +461,11 @@ body{font-family:'Rubik',sans-serif;background:var(--bg);color:var(--text);min-h
   </div>
   <div class="session-bar">
     <div style="flex:1">
-      <div class="session-bar-title">קוד חשבון</div>
-      <div class="session-code-display" id="session-code-bar">------</div>
+      <div class="session-bar-title">קוד הצטרפות — שתף עם החברים</div>
+      <div class="session-code-display" id="session-code-bar" style="font-size:20px;letter-spacing:6px;font-weight:700;">------</div>
     </div>
-    <button class="share-btn" style="background:var(--green);color:#111;border:none;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:700;font-family:'Rubik',sans-serif;cursor:pointer;" onclick="shareCode()">שתף 📤</button>
+    <button style="background:var(--green);color:#111;border:none;border-radius:8px;padding:7px 10px;font-size:12px;font-weight:700;font-family:'Rubik',sans-serif;cursor:pointer;margin-left:6px;" onclick="shareCode()">שתף 📤</button>
+    <button id="close-session-btn" style="background:rgba(255,59,92,0.15);color:var(--red);border:1px solid rgba(255,59,92,0.3);border-radius:8px;padding:7px 10px;font-size:12px;font-weight:700;font-family:'Rubik',sans-serif;cursor:pointer;display:none;" onclick="closeSession()">סגור ⛔</button>
   </div>
   <div class="live-bar">
     <div class="live-dot"></div>
@@ -607,6 +608,8 @@ async function startScan(){
     }catch(e){showToast('שגיאה — טוען דמו');items=demoItems();}
     await createSession();
     showCodeScreen();
+    renderItems();
+    showScreen('screen-items');
   });
 }
 
@@ -614,7 +617,7 @@ function loadDemo(){
   isHost=true;
   items=demoItems();
   showScreen('screen-loading');
-  runSteps(async()=>{await createSession();showCodeScreen();});
+  runSteps(async()=>{await createSession();showCodeScreen();renderItems();showScreen('screen-items');});
 }
 
 function demoItems(){
@@ -737,9 +740,7 @@ function listenSession(){
 function var_red(){return '#FF3B5C';}
 
 function showCodeScreen(){
-  document.getElementById('display-code').textContent=formatCode(myCode);
   document.getElementById('session-code-bar').textContent=formatCode(myCode);
-  showScreen('screen-code');
 }
 
 function formatCode(c){
@@ -859,13 +860,16 @@ function goToItems(){
 }
 
 function goBackFromItems(){
-  if(isHost)showScreen('screen-code');
+  if(isHost)showScreen('screen-camera');
   else showScreen('screen-role');
 }
 
 // ── RENDER ITEMS ──
 function renderItems(){
   myPicks={};
+  // show close button only for host
+  const closeBtn=document.getElementById('close-session-btn');
+  if(closeBtn)closeBtn.style.display=isHost?'block':'none';
   const list=document.getElementById('items-list');list.innerHTML='';
   items.forEach((item,idx)=>{
     const card=document.createElement('div');
