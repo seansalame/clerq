@@ -39,7 +39,7 @@ body{font-family:'Rubik',sans-serif;background:var(--bg);color:var(--text);min-h
 .balance-main{font-size:56px;font-weight:300;color:var(--text);letter-spacing:-2px;}
 .balance-dec{font-size:28px;font-weight:300;color:var(--text-muted);margin-bottom:6px;}
 
-/* ACTION BUTTONS - force LTR so order is: העברה בקשה חלק-חשבון עוד */
+/* ACTION BUTTONS */
 .action-buttons{display:flex;flex-direction:row;justify-content:center;gap:14px;padding:0 16px 28px;direction:ltr;}
 .action-item{display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;border:none;background:none;font-family:'Rubik',sans-serif;flex:1;}
 .action-item:active .action-circle{transform:scale(0.92);opacity:0.8;}
@@ -81,8 +81,8 @@ body{font-family:'Rubik',sans-serif;background:var(--bg);color:var(--text);min-h
 .screen-title{font-size:18px;font-weight:600;}
 
 /* CAMERA */
-.camera-area{flex:1;display:flex;flex-direction:column;padding:0 20px 24px;gap:14px;}
-.camera-frame{flex:1;min-height:280px;border-radius:20px;border:1.5px dashed #3A3A3A;background:var(--bg-card);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;transition:border-color .2s;overflow:hidden;position:relative;}
+.camera-area{flex:1;display:flex;flex-direction:column;padding:0 20px 24px;gap:12px;}
+.camera-frame{flex:1;min-height:240px;border-radius:20px;border:1.5px dashed #3A3A3A;background:var(--bg-card);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;transition:border-color .2s;overflow:hidden;position:relative;}
 .camera-frame:active{border-color:var(--green);}
 .camera-frame img{width:100%;height:100%;object-fit:cover;}
 .camera-overlay{position:absolute;inset:0;background:rgba(0,0,0,.6);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--text);}
@@ -90,6 +90,12 @@ body{font-family:'Rubik',sans-serif;background:var(--bg);color:var(--text);min-h
 .cam-icon{font-size:52px;margin-bottom:8px;}
 .cam-text{font-size:16px;font-weight:500;}
 .cam-sub{font-size:13px;color:var(--text-muted);margin-top:2px;text-align:center;}
+
+/* Upload options row */
+.upload-row{display:flex;gap:10px;}
+.upload-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);font-size:14px;font-weight:500;color:var(--text);cursor:pointer;font-family:'Rubik',sans-serif;transition:border-color .15s;}
+.upload-btn:active{border-color:var(--green);opacity:.8;}
+.upload-btn span{font-size:20px;}
 
 /* BUTTONS */
 .btn-green{width:100%;padding:17px;background:var(--green);color:#111;border:none;border-radius:var(--radius);font-size:16px;font-weight:700;font-family:'Rubik',sans-serif;cursor:pointer;transition:opacity .15s,transform .15s;}
@@ -159,11 +165,20 @@ body{font-family:'Rubik',sans-serif;background:var(--bg);color:var(--text);min-h
 .s-item-name{color:var(--text);font-weight:500;flex:1;}
 .s-item-note{font-size:11px;color:var(--text-muted);margin-top:2px;}
 .s-item-price{color:var(--text-muted);font-weight:600;}
-.tip-box{background:var(--bg-input);border-radius:var(--radius);padding:14px 16px;margin-bottom:14px;}
-.tip-title{font-size:13px;font-weight:600;margin-bottom:10px;}
-.tip-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
-.tip-btn{padding:10px 4px;border-radius:10px;border:1px solid var(--border);background:var(--bg-card);font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer;font-family:'Rubik',sans-serif;text-align:center;transition:all .15s;}
-.tip-btn.active{background:var(--green);color:#111;border-color:var(--green);font-weight:700;}
+
+/* TIP SECTION - new design */
+.tip-box{background:var(--bg-input);border-radius:var(--radius);padding:16px;margin-bottom:14px;}
+.tip-title{font-size:13px;font-weight:600;margin-bottom:12px;}
+.tip-mode-row{display:flex;gap:8px;margin-bottom:12px;direction:ltr;}
+.tip-mode-btn{flex:1;padding:10px 6px;border-radius:10px;border:1px solid var(--border);background:var(--bg-card);font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer;font-family:'Rubik',sans-serif;text-align:center;transition:all .15s;}
+.tip-mode-btn.active{background:var(--green);color:#111;border-color:var(--green);font-weight:700;}
+.tip-input-row{display:flex;align-items:center;gap:10px;}
+.tip-number-input{flex:1;padding:12px 14px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:18px;font-weight:500;font-family:'Rubik',sans-serif;text-align:center;outline:none;transition:border-color .15s;direction:ltr;}
+.tip-number-input:focus{border-color:var(--green);}
+.tip-number-input:disabled{opacity:.4;cursor:not-allowed;}
+.tip-unit{font-size:16px;font-weight:600;color:var(--text-muted);min-width:30px;}
+.tip-preview-text{font-size:12px;color:var(--text-muted);margin-top:8px;text-align:center;}
+
 .totals-box{background:var(--bg-input);border-radius:var(--radius);padding:14px 16px;margin-bottom:20px;}
 .total-row{display:flex;justify-content:space-between;font-size:14px;color:var(--text-muted);padding:5px 0;}
 .total-row.final{font-size:17px;font-weight:700;color:var(--text);border-top:1px solid var(--border);margin-top:6px;padding-top:12px;}
@@ -190,12 +205,10 @@ body{font-family:'Rubik',sans-serif;background:var(--bg);color:var(--text);min-h
 
 <!-- ══ HOME ══ -->
 <div class="screen active" id="screen-home">
-
   <div class="status-bar">
     <div class="status-time">9:41</div>
     <div class="status-icons"><span>🔋62%</span><span>WiFi</span><span>4G</span></div>
   </div>
-
   <div class="home-header">
     <div class="bit-wordmark">bit</div>
     <div class="header-left">
@@ -203,7 +216,6 @@ body{font-family:'Rubik',sans-serif;background:var(--bg);color:var(--text);min-h
       <button class="avatar-btn">ש</button>
     </div>
   </div>
-
   <div class="balance-section">
     <div class="balance-label">היתרה שלך</div>
     <div class="balance-amount">
@@ -213,7 +225,7 @@ body{font-family:'Rubik',sans-serif;background:var(--bg);color:var(--text);min-h
     </div>
   </div>
 
-  <!-- סדר משמאל לימין: העברה ← בקשה ← חלק חשבון ← עוד -->
+  <!-- סדר משמאל לימין: העברה, בקשה, חלק חשבון, עוד -->
   <div class="action-buttons">
     <button class="action-item">
       <div class="action-circle red">
@@ -257,7 +269,6 @@ body{font-family:'Rubik',sans-serif;background:var(--bg);color:var(--text);min-h
       <span class="section-title">פעילות אחרונה</span>
       <button class="search-btn">🔍</button>
     </div>
-
     <div class="tx-item">
       <div class="tx-avatar" style="background:#1E1E2E;font-size:16px;font-weight:700;color:#9A9AFF;">לי</div>
       <div class="tx-info">
@@ -269,7 +280,6 @@ body{font-family:'Rubik',sans-serif;background:var(--bg);color:var(--text);min-h
         <div class="tx-amount">₪15</div>
       </div>
     </div>
-
     <div class="tx-item">
       <div class="tx-avatar" style="background:#1E2A1E;font-size:16px;font-weight:700;color:#5A9A5A;">פ</div>
       <div class="tx-info">
@@ -281,7 +291,6 @@ body{font-family:'Rubik',sans-serif;background:var(--bg);color:var(--text);min-h
         <div class="tx-amount">₪35</div>
       </div>
     </div>
-
     <div class="tx-item">
       <div class="tx-avatar" style="background:#1A2A2A;font-size:16px;font-weight:700;color:var(--cyan);">ג</div>
       <div class="tx-info">
@@ -296,20 +305,10 @@ body{font-family:'Rubik',sans-serif;background:var(--bg);color:var(--text);min-h
   </div>
 
   <div style="flex:1"></div>
-
   <div class="bottom-nav">
-    <button class="nav-item active">
-      <span class="nav-icon">🏠</span>
-      <span>ראשי</span>
-    </button>
-    <button class="nav-item">
-      <span class="nav-icon">💳</span>
-      <span>כיסים</span>
-    </button>
-    <button class="nav-item">
-      <span class="nav-icon">👤</span>
-      <span>פרופיל</span>
-    </button>
+    <button class="nav-item active"><span class="nav-icon">🏠</span><span>ראשי</span></button>
+    <button class="nav-item"><span class="nav-icon">💳</span><span>כיסים</span></button>
+    <button class="nav-item"><span class="nav-icon">👤</span><span>פרופיל</span></button>
   </div>
 </div>
 
@@ -320,14 +319,29 @@ body{font-family:'Rubik',sans-serif;background:var(--bg);color:var(--text);min-h
     <span class="screen-title">סרוק קבלה</span>
   </div>
   <div class="camera-area">
-    <label class="camera-frame" id="camera-frame" for="camera-input">
+
+    <!-- תמונה שנבחרה -->
+    <div class="camera-frame" id="camera-frame">
       <div style="text-align:center">
         <div class="cam-icon">📷</div>
-        <div class="cam-text">צלם את הקבלה</div>
-        <div class="cam-sub">לחץ לפתיחת המצלמה<br/>או בחר מהגלריה</div>
+        <div class="cam-text">בחר תמונה של הקבלה</div>
+        <div class="cam-sub">צלם עכשיו או העלה מהגלריה</div>
       </div>
-    </label>
-    <input class="camera-input" type="file" id="camera-input" accept="image/*" capture="environment" onchange="handleImage(this)"/>
+    </div>
+
+    <!-- שני כפתורי העלאה -->
+    <div class="upload-row">
+      <label class="upload-btn" for="camera-shoot">
+        <span>📸</span> מצלמה
+      </label>
+      <input type="file" id="camera-shoot" accept="image/*" capture="environment" class="camera-input" onchange="handleImage(this)"/>
+
+      <label class="upload-btn" for="gallery-pick">
+        <span>🖼️</span> גלריה
+      </label>
+      <input type="file" id="gallery-pick" accept="image/*" class="camera-input" onchange="handleImage(this)"/>
+    </div>
+
     <button class="btn-green" id="scan-btn" onclick="startScan()" disabled>🤖 סרוק עם AI</button>
     <button class="btn-dark" onclick="loadDemo()">טען דמו (ללא תמונה)</button>
   </div>
@@ -335,9 +349,7 @@ body{font-family:'Rubik',sans-serif;background:var(--bg);color:var(--text);min-h
 
 <!-- ══ LOADING ══ -->
 <div class="screen" id="screen-loading">
-  <div class="screen-header">
-    <div class="bit-wordmark">bit</div>
-  </div>
+  <div class="screen-header"><div class="bit-wordmark">bit</div></div>
   <div class="loading-body">
     <div class="loader-ring">
       <div class="ring-outer"></div>
@@ -395,26 +407,37 @@ body{font-family:'Rubik',sans-serif;background:var(--bg);color:var(--text);min-h
     <button class="back-btn" style="position:absolute;top:54px;right:20px;" onclick="showScreen('screen-items')">←</button>
     <div class="summary-hero-lbl">סה״כ לתשלום</div>
     <div class="summary-hero-amt" id="hero-amt">₪0</div>
-    <div class="summary-hero-sub" id="hero-sub">כולל טיפ</div>
+    <div class="summary-hero-sub" id="hero-sub">ללא טיפ</div>
   </div>
   <div class="summary-card">
     <div class="section-title" style="margin-bottom:14px;">המנות שלי</div>
     <div id="summary-list" style="margin-bottom:20px;"></div>
+
+    <!-- TIP - new design -->
     <div class="tip-box">
       <div class="tip-title">כמה טיפ?</div>
-      <div class="tip-grid">
-        <button class="tip-btn" onclick="setTip(0,this)">0%</button>
-        <button class="tip-btn" onclick="setTip(10,this)">10%</button>
-        <button class="tip-btn active" onclick="setTip(12,this)">12%</button>
-        <button class="tip-btn" onclick="setTip(15,this)">15%</button>
-        <button class="tip-btn" onclick="setTip(18,this)">18%</button>
+
+      <!-- mode selector -->
+      <div class="tip-mode-row">
+        <button class="tip-mode-btn" id="mode-pct" onclick="setTipMode('pct')">אחוזים %</button>
+        <button class="tip-mode-btn" id="mode-shk" onclick="setTipMode('shk')">שקלים ₪</button>
+        <button class="tip-mode-btn active" id="mode-none" onclick="setTipMode('none')">ללא טיפ</button>
       </div>
+
+      <!-- input -->
+      <div class="tip-input-row" id="tip-input-row" style="display:none">
+        <input type="number" class="tip-number-input" id="tip-number" min="0" step="1" placeholder="0" oninput="calcTotals()"/>
+        <span class="tip-unit" id="tip-unit">%</span>
+      </div>
+      <div class="tip-preview-text" id="tip-preview-text">ללא טיפ</div>
     </div>
+
     <div class="totals-box">
       <div class="total-row"><span>סכום ביניים</span><span id="t-sub">₪0.00</span></div>
-      <div class="total-row"><span id="t-tip-lbl">טיפ (12%)</span><span id="t-tip">₪0.00</span></div>
+      <div class="total-row"><span id="t-tip-lbl">טיפ</span><span id="t-tip">₪0.00</span></div>
       <div class="total-row final"><span>סה״כ</span><span id="t-total">₪0.00</span></div>
     </div>
+
     <button class="pay-btn" onclick="showScreen('screen-pay')">
       <span style="font-size:20px;font-weight:700;">bit</span>
       שלם עכשיו דרך bit
@@ -453,21 +476,13 @@ body{font-family:'Rubik',sans-serif;background:var(--bg);color:var(--text);min-h
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import{getDatabase,ref,set,onValue,update}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-const cfg={
-  apiKey:"AIzaSyBWYEntIaNdQio86BGVREmBAAqUo0F6sIw",
-  authDomain:"clerq-1145a.firebaseapp.com",
-  databaseURL:"https://clerq-1145a-default-rtdb.firebaseio.com",
-  projectId:"clerq-1145a",
-  storageBucket:"clerq-1145a.firebasestorage.app",
-  messagingSenderId:"426819964309",
-  appId:"1:426819964309:web:adf96da249d35d5d823a9c"
-};
+const cfg={apiKey:"AIzaSyBWYEntIaNdQio86BGVREmBAAqUo0F6sIw",authDomain:"clerq-1145a.firebaseapp.com",databaseURL:"https://clerq-1145a-default-rtdb.firebaseio.com",projectId:"clerq-1145a",storageBucket:"clerq-1145a.firebasestorage.app",messagingSenderId:"426819964309",appId:"1:426819964309:web:adf96da249d35d5d823a9c"};
 const app=initializeApp(cfg),db=getDatabase(app);
 window._db=db;window._ref=ref;window._set=set;window._onValue=onValue;window._update=update;window._fbReady=true;
 </script>
 
 <script>
-let items=[],myPicks={},tipPct=12,sessionId=null,capturedImg=null,capturedMime=null;
+let items=[],myPicks={},tipMode='none',sessionId=null,capturedImg=null,capturedMime=null;
 const myId='u_'+Math.random().toString(36).substr(2,5);
 
 function showScreen(id){
@@ -476,18 +491,21 @@ function showScreen(id){
   window.scrollTo(0,0);
 }
 
+// ── IMAGE HANDLING ──
 function handleImage(input){
   const file=input.files[0];if(!file)return;
   capturedMime=file.type;
   const r=new FileReader();
   r.onload=e=>{
     capturedImg=e.target.result;
-    document.getElementById('camera-frame').innerHTML=`<img src="${capturedImg}" alt="קבלה"/><div class="camera-overlay"><div style="font-size:40px">✅</div><div style="font-size:15px;font-weight:600;margin-top:8px">תמונה נטענה!</div></div>`;
+    document.getElementById('camera-frame').innerHTML=`<img src="${capturedImg}" alt="קבלה"/><div class="camera-overlay"><div style="font-size:40px">✅</div><div style="font-size:15px;font-weight:600;margin-top:8px">תמונה נטענה!</div><div style="font-size:12px;opacity:.7;margin-top:4px">לחץ לחלפה</div></div>`;
+    document.getElementById('camera-frame').onclick=()=>document.getElementById('gallery-pick').click();
     document.getElementById('scan-btn').disabled=false;
   };
   r.readAsDataURL(file);
 }
 
+// ── AI SCAN ──
 async function startScan(){
   if(!capturedImg)return;
   showScreen('screen-loading');
@@ -503,15 +521,22 @@ async function startScan(){
   });
 }
 
-function loadDemo(){
-  items=demoItems();showScreen('screen-loading');
-  runSteps(async()=>{await createSession();renderItems();showScreen('screen-items');});
-}
+// ── DEMO ITEMS ──
+function loadDemo(){items=demoItems();showScreen('screen-loading');runSteps(async()=>{await createSession();renderItems();showScreen('screen-items');});}
 
 function demoItems(){
-  return[{name:'פאפא בורגר',price:50},{name:'פאפא בורגר',price:50},{name:'גרנד מאמא',price:60},{name:'בטטה קטן',price:21},{name:'הום פריין גדול',price:28}];
+  return[
+    {name:'המבורגר 440 גרם',price:89},
+    {name:'המבורגר 220 גרם',price:62},
+    {name:'המבורגר 220 גרם',price:62},
+    {name:"צ'יפס קטן",price:28},
+    {name:"צ'יפס גדול",price:38},
+    {name:'קולה זירו',price:18},
+    {name:'לימונדה',price:22},
+  ];
 }
 
+// ── LOADING STEPS ──
 function runSteps(cb){
   const ids=['ls1','ls2','ls3','ls4'];
   ids.forEach(id=>document.getElementById(id).className='step-row');
@@ -523,6 +548,7 @@ function runSteps(cb){
   go();
 }
 
+// ── FIREBASE ──
 async function createSession(){
   sessionId='clerq_'+Date.now()+'_'+Math.random().toString(36).substr(2,4);
   const data={id:sessionId,created:Date.now(),items,selections:{},users:{}};
@@ -549,6 +575,7 @@ async function syncPicks(){
   try{await window._update(window._ref(window._db),upd);}catch(e){}
 }
 
+// ── RENDER ITEMS ──
 function renderItems(){
   myPicks={};
   const list=document.getElementById('items-list');list.innerHTML='';
@@ -600,6 +627,44 @@ function chgSplit(idx,d,e){
 function getSub(){return Object.entries(myPicks).reduce((s,[i,n])=>s+items[+i].price/n,0);}
 function updateSub(){document.getElementById('my-sub').textContent='₪'+getSub().toFixed(2);}
 
+// ── TIP LOGIC ──
+function setTipMode(mode){
+  tipMode=mode;
+  document.querySelectorAll('.tip-mode-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('mode-'+mode).classList.add('active');
+  const inputRow=document.getElementById('tip-input-row');
+  const unit=document.getElementById('tip-unit');
+  const numInput=document.getElementById('tip-number');
+  if(mode==='none'){
+    inputRow.style.display='none';
+    document.getElementById('tip-preview-text').textContent='ללא טיפ';
+    numInput.value='';
+  } else {
+    inputRow.style.display='flex';
+    unit.textContent=mode==='pct'?'%':'₪';
+    numInput.placeholder=mode==='pct'?'12':'10';
+    numInput.focus();
+  }
+  calcTotals();
+}
+
+function getTipAmount(sub){
+  if(tipMode==='none')return 0;
+  const val=parseFloat(document.getElementById('tip-number').value)||0;
+  if(tipMode==='pct')return sub*(val/100);
+  if(tipMode==='shk')return val;
+  return 0;
+}
+
+function getTipLabel(sub){
+  if(tipMode==='none')return 'ללא טיפ';
+  const val=parseFloat(document.getElementById('tip-number').value)||0;
+  if(tipMode==='pct')return `טיפ ${val}%`;
+  if(tipMode==='shk')return `טיפ ₪${val}`;
+  return 'ללא טיפ';
+}
+
+// ── SUMMARY ──
 function goSummary(){
   if(!Object.keys(myPicks).length){showToast('בחר לפחות מנה אחת');return;}
   buildSummary();showScreen('screen-summary');
@@ -616,18 +681,24 @@ function buildSummary(){
   calcTotals();
 }
 
-function setTip(pct,btn){
-  tipPct=pct;document.querySelectorAll('.tip-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');calcTotals();
-}
-
 function calcTotals(){
-  const sub=getSub(),tip=sub*tipPct/100,total=sub+tip;
+  const sub=getSub();
+  const tip=getTipAmount(sub);
+  const total=sub+tip;
+  const label=getTipLabel(sub);
+
+  // preview text
+  if(tipMode!=='none'){
+    const val=parseFloat(document.getElementById('tip-number').value)||0;
+    document.getElementById('tip-preview-text').textContent=val>0?`טיפ: ₪${tip.toFixed(2)}`:'הכנס סכום';
+  }
+
   document.getElementById('t-sub').textContent='₪'+sub.toFixed(2);
-  document.getElementById('t-tip-lbl').textContent=`טיפ (${tipPct}%)`;
+  document.getElementById('t-tip-lbl').textContent=label;
   document.getElementById('t-tip').textContent='₪'+tip.toFixed(2);
   document.getElementById('t-total').textContent='₪'+total.toFixed(2);
   document.getElementById('hero-amt').textContent='₪'+Math.round(total);
-  document.getElementById('hero-sub').textContent=`כולל טיפ ${tipPct}%`;
+  document.getElementById('hero-sub').textContent=label;
   document.getElementById('pay-num').textContent='₪'+total.toFixed(2);
 }
 
@@ -640,18 +711,18 @@ function shareLink(){
 function endDemo(){showToast('הדמו הסתיים! במוצר האמיתי — תשלום ב-1 לחיצה 🎉');setTimeout(resetAll,2500);}
 
 function resetAll(){
-  items=[];myPicks={};tipPct=12;sessionId=null;capturedImg=null;
-  document.getElementById('camera-frame').innerHTML=`<div style="text-align:center"><div class="cam-icon">📷</div><div class="cam-text">צלם את הקבלה</div><div class="cam-sub">לחץ לפתיחת המצלמה<br/>או בחר מהגלריה</div></div>`;
-  document.getElementById('camera-input').value='';
+  items=[];myPicks={};tipMode='none';sessionId=null;capturedImg=null;
+  document.getElementById('camera-frame').innerHTML=`<div style="text-align:center"><div class="cam-icon">📷</div><div class="cam-text">בחר תמונה של הקבלה</div><div class="cam-sub">צלם עכשיו או העלה מהגלריה</div></div>`;
+  document.getElementById('camera-frame').onclick=null;
+  document.getElementById('camera-shoot').value='';
+  document.getElementById('gallery-pick').value='';
   document.getElementById('scan-btn').disabled=true;
+  // reset tip
+  setTipMode('none');
   showScreen('screen-home');
 }
 
-function showToast(msg){
-  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3000);
-}
-
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 </script>
 </body>
