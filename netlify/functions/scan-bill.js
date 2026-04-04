@@ -1,13 +1,30 @@
 exports.handler = async function(event) {
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS'
+      },
+      body: ''
+    };
+  }
+
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method Not Allowed' };
+    return {
+      statusCode: 405,
+      headers: { 'Access-Control-Allow-Origin': '*' },
+      body: JSON.stringify({ error: 'Method Not Allowed' })
+    };
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'API key not configured' })
+      headers: { 'Access-Control-Allow-Origin': '*' },
+      body: JSON.stringify({ error: 'GEMINI_API_KEY not set' })
     };
   }
 
@@ -15,84 +32,104 @@ exports.handler = async function(event) {
   try {
     body = JSON.parse(event.body);
   } catch {
-    return { statusCode: 400, body: JSON.stringify({ error: 'Invalid JSON' }) };
+    return {
+      statusCode: 400,
+      headers: { 'Access-Control-Allow-Origin': '*' },
+      body: JSON.stringify({ error: 'Invalid JSON body' })
+    };
   }
 
   const { image, mimeType } = body;
   if (!image || !mimeType) {
-    return { statusCode: 400, body: JSON.stringify({ error: 'Missing image or mimeType' }) };
+    return {
+      statusCode: 400,
+      headers: { 'Access-Control-Allow-Origin': '*' },
+      body: JSON.stringify({ error: 'Missing image or mimeType' })
+    };
   }
 
-  const prompt = `You are a receipt scanner. Extract ALL food and drink line items from this restaurant receipt image.
-Rules:
-- Include every food and drink item
-- EXCLUDE: tax, VAT, service charge, tip, total, subtotal, discounts
-- Keep item names exactly as written (Hebrew or English)
-- Return ONLY a valid JSON array, no other text, no markdown
-- Format: [{"name":"item name","price":12.50}]
-- Price must be a number
-- If you cannot read the receipt clearly, return: []`;
+  const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+
+  const requestBody = {
+    contents: [
+      {
+        parts: [
+          {
+            text: `You are a receipt scanner. Look at this restaurant receipt image and extract all food and drink line items.
+
+RULES:
+- Extract ONLY food and drink items
+- Do NOT include: tax, VAT, service charge, tip, total, subtotal, discounts
+- Keep item names exactly as written on the receipt (Hebrew or English)
+- Return ONLY a JSON array, no explanation, no markdown, no code blocks
+- Use this exact format: [{"name":"item name","price":12.50}]
+- Price must be a number (not a string)
+- If you cannot read the receipt, return empty array: []`
+          },
+          {
+            inline_data: {
+              mime_type: mimeType,
+              data: image
+            }
+          }
+        ]
+      }
+    ],
+    generationConfig: {
+      temperature: 0,
+      maxOutputTokens: 2048
+    }
+  };
 
   try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 8000);
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(requestBody)
+    });
 
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash-001:generateContent?key=${apiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        signal: controller.signal,
-        body: JSON.stringify({
-          contents: [{
-            parts: [
-              { text: prompt },
-              { inline_data: { mime_type: mimeType, data: image } }
-            ]
-          }],
-          generationConfig: {
-            temperature: 0.1,
-            maxOutputTokens: 1024,
-          }
-        })
-      }
-    );
-
-    clearTimeout(timeout);
+    const responseText = await response.text();
+    console.log('Gemini status:', response.status);
+    console.log('Gemini response:', responseText.substring(0, 500));
 
     if (!response.ok) {
-      const errText = await response.text();
-      console.error('Gemini error:', errText);
       return {
         statusCode: 502,
-        body: JSON.stringify({ error: 'Gemini API error', details: errText })
+        headers: { 'Access-Control-Allow-Origin': '*' },
+        body: JSON.stringify({ error: 'Gemini API error', details: responseText })
       };
     }
 
-    const data = await response.json();
-    let text = data.candidates?.[0]?.content?.parts?.[0]?.text || '[]';
-    text = text.replace(/```json|```/g, '').trim();
+    const data = JSON.parse(responseText);
+    let text = data?.candidates?.[0]?.content?.parts?.[0]?.text || '[]';
+
+    text = text.trim();
+    text = text.replace(/```json/gi, '').replace(/```/g, '').trim();
+
+    const startIdx = text.indexOf('[');
+    const endIdx = text.lastIndexOf(']');
+    if (startIdx !== -1 && endIdx !== -1) {
+      text = text.substring(startIdx, endIdx + 1);
+    }
 
     let items = [];
     try {
       items = JSON.parse(text);
-    } catch {
-      console.error('Parse error, raw text:', text);
+    } catch (parseErr) {
+      console.log('Parse error:', parseErr.message, 'Raw text:', text);
       items = [];
     }
 
     if (!Array.isArray(items)) items = [];
 
-    const valid = items.filter(i =>
-      i &&
-      typeof i.name === 'string' &&
-      i.name.trim().length > 0 &&
-      typeof i.price === 'number' &&
-      i.price > 0
-    ).map(i => ({
-      name: i.name.trim(),
-      price: Math.round(i.price * 100) / 100
-    }));
+    const validItems = items
+      .filter(i => i && typeof i.name === 'string' && i.name.trim() && typeof i.price === 'number' && i.price > 0)
+      .map(i => ({
+        name: i.name.trim(),
+        price: Math.round(i.price * 100) / 100
+      }));
+
+    console.log('Valid items found:', validItems.length);
 
     return {
       statusCode: 200,
@@ -100,14 +137,15 @@ Rules:
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
       },
-      body: JSON.stringify({ items: valid })
+      body: JSON.stringify({ items: validItems })
     };
 
   } catch (err) {
-    console.error('Function error:', err.message);
+    console.log('Fetch error:', err.message);
     return {
       statusCode: 502,
-      body: JSON.stringify({ error: err.message })
+      headers: { 'Access-Control-Allow-Origin': '*' },
+      body: JSON.stringify({ error: 'Network error', details: err.message })
     };
   }
 };
