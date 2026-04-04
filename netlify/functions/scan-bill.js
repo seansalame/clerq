@@ -51,30 +51,34 @@ exports.handler = async function(event) {
   const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
   const requestBody = {
-    contents: [
-      {
-        parts: [
-          {
-            text: `You are a receipt scanner. Look at this restaurant receipt image and extract all food and drink line items.
+    contents: [{
+      parts: [
+        {
+          text: `You are an expert receipt scanner. Analyze this restaurant receipt image carefully.
 
-RULES:
-- Extract ONLY food and drink items
-- Do NOT include: tax, VAT, service charge, tip, total, subtotal, discounts
-- Keep item names exactly as written on the receipt (Hebrew or English)
-- Return ONLY a JSON array, no explanation, no markdown, no code blocks
-- Use this exact format: [{"name":"item name","price":12.50}]
-- Price must be a number (not a string)
-- If you cannot read the receipt, return empty array: []`
-          },
-          {
-            inline_data: {
-              mime_type: mimeType,
-              data: image
-            }
+CRITICAL RULES:
+1. Extract ONLY food and drink items. Do NOT include: tax, VAT, service charge, tip, total, subtotal, discounts.
+2. The receipt has columns: item name | unit price | quantity | total price.
+3. READ THE QUANTITY COLUMN. If quantity is 2, add the item TWICE as separate entries. If quantity is 3, add it THREE times.
+4. Always use the UNIT PRICE (not the total) for each entry.
+5. Keep names exactly as written (Hebrew or English).
+6. Return ONLY a raw JSON array. No markdown, no explanation, no code blocks.
+7. Format: [{"name":"item name","price":50.00}]
+
+EXAMPLE:
+Receipt row: "פאפא בורגר | 50.00 | 2 | 100.00"
+Correct output: [{"name":"פאפא בורגר","price":50.00},{"name":"פאפא בורגר","price":50.00}]
+
+If unreadable, return: []`
+        },
+        {
+          inline_data: {
+            mime_type: mimeType,
+            data: image
           }
-        ]
-      }
-    ],
+        }
+      ]
+    }],
     generationConfig: {
       temperature: 0,
       maxOutputTokens: 2048
@@ -115,8 +119,8 @@ RULES:
     let items = [];
     try {
       items = JSON.parse(text);
-    } catch (parseErr) {
-      console.log('Parse error:', parseErr.message, 'Raw text:', text);
+    } catch(e) {
+      console.log('Parse error:', e.message);
       items = [];
     }
 
@@ -124,12 +128,9 @@ RULES:
 
     const validItems = items
       .filter(i => i && typeof i.name === 'string' && i.name.trim() && typeof i.price === 'number' && i.price > 0)
-      .map(i => ({
-        name: i.name.trim(),
-        price: Math.round(i.price * 100) / 100
-      }));
+      .map(i => ({ name: i.name.trim(), price: Math.round(i.price * 100) / 100 }));
 
-    console.log('Valid items found:', validItems.length);
+    console.log('Items found:', validItems.length);
 
     return {
       statusCode: 200,
@@ -140,12 +141,12 @@ RULES:
       body: JSON.stringify({ items: validItems })
     };
 
-  } catch (err) {
-    console.log('Fetch error:', err.message);
+  } catch(err) {
+    console.log('Error:', err.message);
     return {
       statusCode: 502,
       headers: { 'Access-Control-Allow-Origin': '*' },
-      body: JSON.stringify({ error: 'Network error', details: err.message })
+      body: JSON.stringify({ error: err.message })
     };
   }
 };
