@@ -320,29 +320,16 @@ body{font-family:'Rubik',sans-serif;background:var(--bg);color:var(--text);min-h
   </div>
   <div class="camera-area">
 
-    <!-- תמונה שנבחרה -->
-    <div class="camera-frame" id="camera-frame">
+    <label class="camera-frame" id="camera-frame" for="gallery-pick">
       <div style="text-align:center">
         <div class="cam-icon">📷</div>
-        <div class="cam-text">בחר תמונה של הקבלה</div>
-        <div class="cam-sub">צלם עכשיו או העלה מהגלריה</div>
+        <div class="cam-text">לחץ לצילום או העלאה</div>
+        <div class="cam-sub">פתח מצלמה או גלריה</div>
       </div>
-    </div>
+    </label>
+    <input type="file" id="gallery-pick" accept="image/*" class="camera-input" onchange="handleImage(this)"/>
 
-    <!-- שני כפתורי העלאה -->
-    <div class="upload-row">
-      <label class="upload-btn" for="camera-shoot">
-        <span>📸</span> מצלמה
-      </label>
-      <input type="file" id="camera-shoot" accept="image/*" capture="environment" class="camera-input" onchange="handleImage(this)"/>
-
-      <label class="upload-btn" for="gallery-pick">
-        <span>🖼️</span> גלריה
-      </label>
-      <input type="file" id="gallery-pick" accept="image/*" class="camera-input" onchange="handleImage(this)"/>
-    </div>
-
-    <button class="btn-green" id="scan-btn" onclick="startScan()" disabled>🤖 סרוק עם AI</button>
+    <button class="btn-green" id="scan-btn" onclick="startScan()" disabled>סרוק עם AI</button>
     <button class="btn-dark" onclick="loadDemo()">טען דמו (ללא תמונה)</button>
   </div>
 </div>
@@ -712,9 +699,7 @@ function endDemo(){showToast('הדמו הסתיים! במוצר האמיתי —
 
 function resetAll(){
   items=[];myPicks={};tipMode='none';sessionId=null;capturedImg=null;
-  document.getElementById('camera-frame').innerHTML=`<div style="text-align:center"><div class="cam-icon">📷</div><div class="cam-text">בחר תמונה של הקבלה</div><div class="cam-sub">צלם עכשיו או העלה מהגלריה</div></div>`;
-  document.getElementById('camera-frame').onclick=null;
-  document.getElementById('camera-shoot').value='';
+  document.getElementById('camera-frame').innerHTML=`<div style="text-align:center"><div class="cam-icon">📷</div><div class="cam-text">לחץ לצילום או העלאה</div><div class="cam-sub">פתח מצלמה או גלריה</div></div>`;
   document.getElementById('gallery-pick').value='';
   document.getElementById('scan-btn').disabled=true;
   // reset tip
